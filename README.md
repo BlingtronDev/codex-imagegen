@@ -2,9 +2,16 @@
 
 English | [简体中文](README.zh-CN.md)
 
-An agent skill that lets coding agents such as Claude Code generate and edit raster images through [Codex CLI](https://github.com/openai/codex)'s built-in `image_gen` tool. It uses your ChatGPT login, so no `OPENAI_API_KEY` is needed.
+An agent skill that lets your coding agent generate images through [Codex CLI](https://github.com/openai/codex)'s built-in `image_gen` tool. It uses your ChatGPT login, so no `OPENAI_API_KEY` is needed.
 
 The skill is a single shell script plus a `SKILL.md` that tells the agent when and how to call it.
+
+## Supported agents
+
+- [Claude Code](https://claude.com/claude-code)
+- [pi](https://github.com/badlogic/pi-mono)
+
+Other agents that load `SKILL.md` skills and can run shell commands should work too. Codex itself does not need this skill, since it can call `image_gen` directly.
 
 ## Requirements
 
@@ -22,12 +29,18 @@ npx skills@latest add BlingtronDev/codex-imagegen -g
 
 `-g` installs it for your user so every project can use it. Leave it off to install into the current project only.
 
-Or install by hand. Clone the repo, then link it into your agent's skills folder. For Claude Code:
+Or install by hand. Clone the repo, then link it into your agent's skills folder:
 
 ```bash
 git clone https://github.com/BlingtronDev/codex-imagegen.git ~/.agents/skills/codex-imagegen
+
+# Claude Code
 mkdir -p ~/.claude/skills
 ln -s ../../.agents/skills/codex-imagegen ~/.claude/skills/codex-imagegen
+
+# pi
+mkdir -p ~/.pi/agent/skills
+ln -s ../../../.agents/skills/codex-imagegen ~/.pi/agent/skills/codex-imagegen
 ```
 
 ## Usage

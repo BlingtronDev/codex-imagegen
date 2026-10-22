@@ -2,61 +2,76 @@
 
 [English](README.md) | 简体中文
 
-一个智能体技能（agent skill），让 Claude Code 等编程智能体通过 [Codex CLI](https://github.com/openai/codex) 内置的 `image_gen` 工具生成和编辑位图图像。它使用你的 ChatGPT 登录，不需要 `OPENAI_API_KEY`。
+让你的编程智能体也能生成图片。这个技能调用的是 [Codex CLI](https://github.com/openai/codex) 自带的 `image_gen` 工具，直接用你的 ChatGPT 账号登录，不用配置 `OPENAI_API_KEY`。
 
-这个技能只有一个 shell 脚本，外加一个 `SKILL.md`，用来告诉智能体什么时候调用脚本、怎么调用。
+整个技能就是一个 shell 脚本，再加一个 `SKILL.md`，告诉智能体什么时候该用、怎么用。
 
-## 环境要求
+## 支持的智能体
 
-- [Codex CLI](https://github.com/openai/codex)，并用支持图像生成的 ChatGPT 账号登录（`codex login`）
-- `bash` 和 [`jq`](https://jqlang.org/)
-- 输出 `.jpg`/`.jpeg` 需要 macOS（用 `sips` 转换）。输出 PNG 在任何系统上都可以。
+- [Claude Code](https://claude.com/claude-code)
+- [pi](https://github.com/badlogic/pi-mono)
+
+其他支持 `SKILL.md` 技能、又能执行 shell 命令的智能体，一般也能用。Codex 本身就能直接调用 `image_gen`，不需要装这个技能。
+
+## 准备工作
+
+- 安装 [Codex CLI](https://github.com/openai/codex)，并用 `codex login` 登录一个能生成图片的 ChatGPT 账号
+- 安装 `bash` 和 [`jq`](https://jqlang.org/)
+- 想输出 `.jpg`/`.jpeg` 的话需要 macOS（脚本用 `sips` 转格式）。PNG 在哪个系统上都行。
 
 ## 安装
 
-用 [`skills`](https://github.com/vercel-labs/skills) 命令行工具安装：
+用 [`skills`](https://github.com/vercel-labs/skills) 一行命令装好：
 
 ```bash
 npx skills@latest add BlingtronDev/codex-imagegen -g
 ```
 
-`-g` 会为当前用户全局安装，所有项目都能用。不加 `-g` 则只安装到当前项目。
+加 `-g` 是装到全局，所有项目都能用；不加就只装到当前项目。
 
-也可以手动安装：先克隆仓库，再链接到智能体的技能文件夹。以 Claude Code 为例：
+也可以手动装：先把仓库克隆下来，再链接到智能体的技能文件夹。
 
 ```bash
 git clone https://github.com/BlingtronDev/codex-imagegen.git ~/.agents/skills/codex-imagegen
+
+# Claude Code
 mkdir -p ~/.claude/skills
 ln -s ../../.agents/skills/codex-imagegen ~/.claude/skills/codex-imagegen
+
+# pi
+mkdir -p ~/.pi/agent/skills
+ln -s ../../../.agents/skills/codex-imagegen ~/.pi/agent/skills/codex-imagegen
 ```
 
-## 使用方法
+## 怎么用
 
-安装后，直接让智能体生成图片（例如“做一张 16:9 的首页横幅图，内容是……”），它就会自动使用这个技能。你也可以自己运行脚本：
+装好以后，直接跟智能体说你要什么图就行，比如“帮我做一张 16:9 的首页横幅图，画的是……”，它会自己用上这个技能。
+
+你也可以自己运行脚本：
 
 ```bash
-# 生成新图片
-scripts/codex-imagegen -o hero.png "一张 16:9 的宽幅写实照片，内容是……"
+# 生成一张新图
+scripts/codex-imagegen -o hero.png "一张 16:9 的写实风格宽幅照片，画的是……"
 
-# 编辑图片
-scripts/codex-imagegen -i hero.png -o hero-v2.png "只把天空改成日落，其他部分保持不变"
+# 改一张现有的图
+scripts/codex-imagegen -i hero.png -o hero-v2.png "只把天空换成日落，别的都别动"
 
-# 使用参考图
-scripts/codex-imagegen -i style.png -o new.png "图 1 是风格参考。画一张……"
+# 参照别的图来画
+scripts/codex-imagegen -i style.png -o new.png "图 1 是风格参考，照这个风格画……"
 ```
 
-| 参数 | 含义 |
+| 参数 | 作用 |
 | --- | --- |
-| `-o OUTPUT` | 输出路径（`.png`、`.jpg` 或 `.jpeg`）。默认：`./codex-image-<时间戳>.png` |
-| `-i IMAGE` | 要编辑或作为参考的输入图片。可以重复使用。 |
-| `-f` | 如果 `OUTPUT` 已存在，就覆盖它。 |
-| `-h` | 显示帮助。 |
+| `-o OUTPUT` | 图片存到哪里（`.png`、`.jpg` 或 `.jpeg`）。不写的话默认是 `./codex-image-<时间戳>.png` |
+| `-i IMAGE` | 要修改或参考的图片，可以写多个。 |
+| `-f` | `OUTPUT` 已经存在时直接覆盖。 |
+| `-h` | 查看帮助。 |
 
-成功时，脚本会输出所保存图片的绝对路径。失败时，脚本以非零状态码退出，并输出 Codex 给出的原因。每张图片大约需要 30–90 秒。
+成功的话，脚本会打印图片保存的完整路径；失败的话，会以非零状态码退出，并打印 Codex 给出的原因。一张图一般要等 30–90 秒。
 
-## 工作原理
+## 原理
 
-脚本在一个临时目录里以只读沙箱运行 `codex exec`，让 Codex 用 `image_gen` 只生成一张图片。然后它从 Codex 的 JSON 事件流中读取 thread ID，把 `$CODEX_HOME/generated_images/<thread_id>/` 里最新的图片复制到你指定的输出路径。
+脚本会在一个临时目录里，用只读沙箱运行 `codex exec`，让 Codex 用 `image_gen` 画一张图。画完后，脚本从 Codex 输出的 JSON 事件里拿到 thread ID，再把 `$CODEX_HOME/generated_images/<thread_id>/` 里最新的那张图复制到你指定的位置。
 
 ## 许可证
 
