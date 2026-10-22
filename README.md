@@ -12,15 +12,21 @@ The skill is a single shell script plus a `SKILL.md` that tells the agent when a
 
 ## Install
 
-Clone into the shared skills folder, then link it into your agent's skills folder. For Claude Code:
+With the [`skills`](https://github.com/vercel-labs/skills) CLI:
+
+```bash
+npx skills@latest add BlingtronDev/codex-imagegen -g
+```
+
+`-g` installs it for your user so every project can use it. Leave it off to install into the current project only.
+
+Or install by hand. Clone the repo, then link it into your agent's skills folder. For Claude Code:
 
 ```bash
 git clone https://github.com/BlingtronDev/codex-imagegen.git ~/.agents/skills/codex-imagegen
 mkdir -p ~/.claude/skills
 ln -s ../../.agents/skills/codex-imagegen ~/.claude/skills/codex-imagegen
 ```
-
-`SKILL.md` refers to the script as `~/.agents/skills/codex-imagegen/scripts/codex-imagegen`. If you clone it somewhere else, update those paths.
 
 ## Usage
 

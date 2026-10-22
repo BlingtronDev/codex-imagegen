@@ -19,10 +19,12 @@ Do not use it for diagrams, charts, flowcharts, simple icons, or anything that s
 
 ## Running it
 
+The script is at `scripts/codex-imagegen` inside this skill's directory (the folder that contains this `SKILL.md`). Replace `<skill-dir>` below with that folder's absolute path.
+
 ```bash
-~/.agents/skills/codex-imagegen/scripts/codex-imagegen -o OUTPUT.png "PROMPT"
-~/.agents/skills/codex-imagegen/scripts/codex-imagegen -i input.png -o output-v2.png "Change only X; keep everything else unchanged"
-~/.agents/skills/codex-imagegen/scripts/codex-imagegen -i style.png -o new.png "Image 1 is a style reference. Draw ..."
+<skill-dir>/scripts/codex-imagegen -o OUTPUT.png "PROMPT"
+<skill-dir>/scripts/codex-imagegen -i input.png -o output-v2.png "Change only X; keep everything else unchanged"
+<skill-dir>/scripts/codex-imagegen -i style.png -o new.png "Image 1 is a style reference. Draw ..."
 ```
 
 Flags:
