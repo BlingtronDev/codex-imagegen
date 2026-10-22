@@ -1,6 +1,6 @@
 ---
 name: codex-imagegen
-description: Generate or edit raster images (photos, illustrations, textures, sprites, mockups, icons, transparent cutouts) by calling Codex's built-in image generator from the shell. Use when the user asks to create, draw, render or edit a bitmap image, or a task needs an AI-generated picture. Not for diagrams, charts or icons better built as SVG/HTML/code.
+description: Generate or edit raster images (photos, illustrations, mockups, sprites) with AI.
 ---
 
 # Codex Image Generation
