@@ -8,10 +8,13 @@ The skill is a single shell script plus a `SKILL.md` that tells the agent when a
 
 ## Supported agents
 
-- [Claude Code](https://claude.com/claude-code)
-- [pi](https://github.com/badlogic/pi-mono)
+Any agent that loads skills from `.agents/skills/` (in the project, or `~/.agents/skills/` globally) and can run shell commands. That includes Amp, Antigravity, Cline, Cursor, Deep Agents, Dexto, Droid, Firebender, fx, Gemini CLI, GitHub Copilot, Kilo Code, Kimi Code CLI, Loaf, OpenCode, pi, PromptScript, Replit, Sarvam Code, Warp, Zed.
 
-Other agents that load `SKILL.md` skills and can run shell commands should work too. Codex itself does not need this skill, since it can call `image_gen` directly.
+[Claude Code](https://claude.com/claude-code) loads skills from `.claude/skills/` instead. It works too; it just needs a link (see Install).
+
+Codex also reads `.agents/skills/`, but it can call `image_gen` directly, so it does not need this skill.
+
+The list comes from the [`skills` CLI's agent table](https://github.com/vercel-labs/skills/blob/main/docs/agents.md).
 
 ## Requirements
 
@@ -29,18 +32,17 @@ npx skills@latest add BlingtronDev/codex-imagegen -g
 
 `-g` installs it for your user so every project can use it. Leave it off to install into the current project only.
 
-Or install by hand. Clone the repo, then link it into your agent's skills folder:
+Or install by hand. Clone the repo into `~/.agents/skills/`, which agents such as pi, Cline, Warp and Zed read directly:
 
 ```bash
 git clone https://github.com/BlingtronDev/codex-imagegen.git ~/.agents/skills/codex-imagegen
+```
 
-# Claude Code
+For Claude Code, also link it into `~/.claude/skills/`:
+
+```bash
 mkdir -p ~/.claude/skills
 ln -s ../../.agents/skills/codex-imagegen ~/.claude/skills/codex-imagegen
-
-# pi
-mkdir -p ~/.pi/agent/skills
-ln -s ../../../.agents/skills/codex-imagegen ~/.pi/agent/skills/codex-imagegen
 ```
 
 ## Usage

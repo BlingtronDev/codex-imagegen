@@ -8,10 +8,13 @@
 
 ## 支持的智能体
 
-- [Claude Code](https://claude.com/claude-code)
-- [pi](https://github.com/badlogic/pi-mono)
+只要智能体会从 `.agents/skills/`（项目里的，或全局的 `~/.agents/skills/`）加载技能，又能执行 shell 命令，就能用。包括 Amp、Antigravity、Cline、Cursor、Deep Agents、Dexto、Droid、Firebender、fx、Gemini CLI、GitHub Copilot、Kilo Code、Kimi Code CLI、Loaf、OpenCode、pi、PromptScript、Replit、Sarvam Code、Warp、Zed。
 
-其他支持 `SKILL.md` 技能、又能执行 shell 命令的智能体，一般也能用。Codex 本身就能直接调用 `image_gen`，不需要装这个技能。
+[Claude Code](https://claude.com/claude-code) 读的是 `.claude/skills/`，也能用，只是要多链接一下（见“安装”）。
+
+Codex 也会读 `.agents/skills/`，但它自己就能直接调用 `image_gen`，用不着这个技能。
+
+这份名单来自 [`skills` 命令的智能体列表](https://github.com/vercel-labs/skills/blob/main/docs/agents.md)。
 
 ## 准备工作
 
@@ -29,18 +32,17 @@ npx skills@latest add BlingtronDev/codex-imagegen -g
 
 加 `-g` 是装到全局，所有项目都能用；不加就只装到当前项目。
 
-也可以手动装：先把仓库克隆下来，再链接到智能体的技能文件夹。
+也可以手动装：把仓库克隆到 `~/.agents/skills/` 就行，pi、Cline、Warp、Zed 这些智能体会直接读这个文件夹。
 
 ```bash
 git clone https://github.com/BlingtronDev/codex-imagegen.git ~/.agents/skills/codex-imagegen
+```
 
-# Claude Code
+用 Claude Code 的话，还要再链接到 `~/.claude/skills/`：
+
+```bash
 mkdir -p ~/.claude/skills
 ln -s ../../.agents/skills/codex-imagegen ~/.claude/skills/codex-imagegen
-
-# pi
-mkdir -p ~/.pi/agent/skills
-ln -s ../../../.agents/skills/codex-imagegen ~/.pi/agent/skills/codex-imagegen
 ```
 
 ## 怎么用
