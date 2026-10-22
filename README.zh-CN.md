@@ -8,9 +8,30 @@
 
 ## 支持的智能体
 
-只要 [`skills` 命令](https://github.com/vercel-labs/skills/blob/main/docs/agents.md)能装进去、又能执行 shell 命令的智能体，都能用。目前一共 75 个，包括 Claude Code、Cursor、GitHub Copilot、Gemini CLI、OpenCode、Windsurf、pi 等：
+支持 Claude Code、Cursor、GitHub Copilot、Gemini CLI、OpenCode、Windsurf、pi 等 75 个智能体。只要 [`skills` 命令](https://github.com/vercel-labs/skills/blob/main/docs/agents.md)能装进去、又能执行 shell 命令，就能用。
 
-AdaL、AiderDesk、Amp、Antigravity、Antigravity CLI、AstrBot、Augment、Autohand Code CLI、Claude Code、Cline、Code Studio、CodeArts Agent、CodeBuddy、Codemaker、Command Code、Continue、Cortex Code、Crush、Cursor、Deep Agents、Devin for Terminal、Dexto、Droid、Eve、Firebender、ForgeCode、fx、Gemini CLI、GitHub Copilot、Goose、Grok Build、Hermes Agent、IBM Bob、iFlow CLI、inference.sh、Jazz、Junie、Kilo Code、Kimchi、Kimi Code CLI、Kiro CLI、Kode、Lingma、Loaf、MCPJam、MiniMax Code、Mistral Vibe、Moxby、Mux、Neovate、Ona、OpenClaw、OpenCode、OpenHands、pi、Pochi、Posit Assistant、PromptScript、Qoder、Qwen Code、Reasonix、Replit、Roo Code、Rovo Dev、Sarvam Code、Tabnine CLI、Terramind、Tinycloud、Trae、Warp、Windsurf、ZCode、Zed、Zencoder、Zenflow。
+<details>
+<summary>查看全部 75 个</summary>
+
+<table>
+<tr><td>AdaL</td><td>AiderDesk</td><td>Amp</td><td>Antigravity</td><td>Antigravity CLI</td></tr>
+<tr><td>AstrBot</td><td>Augment</td><td>Autohand Code CLI</td><td>Claude Code</td><td>Cline</td></tr>
+<tr><td>Code Studio</td><td>CodeArts Agent</td><td>CodeBuddy</td><td>Codemaker</td><td>Command Code</td></tr>
+<tr><td>Continue</td><td>Cortex Code</td><td>Crush</td><td>Cursor</td><td>Deep Agents</td></tr>
+<tr><td>Devin for Terminal</td><td>Dexto</td><td>Droid</td><td>Eve</td><td>Firebender</td></tr>
+<tr><td>ForgeCode</td><td>fx</td><td>Gemini CLI</td><td>GitHub Copilot</td><td>Goose</td></tr>
+<tr><td>Grok Build</td><td>Hermes Agent</td><td>IBM Bob</td><td>iFlow CLI</td><td>inference.sh</td></tr>
+<tr><td>Jazz</td><td>Junie</td><td>Kilo Code</td><td>Kimchi</td><td>Kimi Code CLI</td></tr>
+<tr><td>Kiro CLI</td><td>Kode</td><td>Lingma</td><td>Loaf</td><td>MCPJam</td></tr>
+<tr><td>MiniMax Code</td><td>Mistral Vibe</td><td>Moxby</td><td>Mux</td><td>Neovate</td></tr>
+<tr><td>Ona</td><td>OpenClaw</td><td>OpenCode</td><td>OpenHands</td><td>pi</td></tr>
+<tr><td>Pochi</td><td>Posit Assistant</td><td>PromptScript</td><td>Qoder</td><td>Qwen Code</td></tr>
+<tr><td>Reasonix</td><td>Replit</td><td>Roo Code</td><td>Rovo Dev</td><td>Sarvam Code</td></tr>
+<tr><td>Tabnine CLI</td><td>Terramind</td><td>Tinycloud</td><td>Trae</td><td>Warp</td></tr>
+<tr><td>Windsurf</td><td>ZCode</td><td>Zed</td><td>Zencoder</td><td>Zenflow</td></tr>
+</table>
+
+</details>
 
 Codex 不在名单里，是因为它自己就能直接调用 `image_gen`，用不着这个技能。
 
