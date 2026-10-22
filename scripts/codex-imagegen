@@ -1,0 +1,93 @@
+#!/usr/bin/env bash
+# Generate or edit one raster image through Codex's built-in image_gen tool
+# (uses the ChatGPT login, no OPENAI_API_KEY), then copy it to a chosen path.
+set -euo pipefail
+
+usage() {
+  cat <<'EOF'
+Usage: codex-imagegen [-o OUTPUT] [-i IMAGE]... [-f] PROMPT
+
+  PROMPT        What to draw, or how to change the input image(s).
+  -o OUTPUT     Where to save the result (.png, .jpg or .jpeg).
+                Default: ./codex-image-<timestamp>.png
+  -i IMAGE      Attach an image to edit or use as a reference. Repeatable.
+  -f            Overwrite OUTPUT if it already exists.
+  -h            Show this help.
+
+Prints the absolute path of the saved image on success.
+Takes about 30-90 seconds per image.
+EOF
+}
+
+out=""
+force=0
+images=()
+while getopts ":o:i:fh" opt; do
+  case $opt in
+    o) out=$OPTARG ;;
+    i) images+=("$OPTARG") ;;
+    f) force=1 ;;
+    h) usage; exit 0 ;;
+    *) usage >&2; exit 2 ;;
+  esac
+done
+shift $((OPTIND - 1))
+prompt="$*"
+[[ -n $prompt ]] || { usage >&2; exit 2; }
+
+[[ -n $out ]] || out="codex-image-$(date +%Y%m%d-%H%M%S).png"
+ext=$(tr '[:upper:]' '[:lower:]' <<<"${out##*.}")
+case $ext in
+  png | jpg | jpeg) ;;
+  *) echo "codex-imagegen: output must end in .png, .jpg or .jpeg: $out" >&2; exit 2 ;;
+esac
+if [[ -e $out && $force -eq 0 ]]; then
+  echo "codex-imagegen: $out already exists (use -f to overwrite)" >&2
+  exit 1
+fi
+mkdir -p "$(dirname "$out")"
+
+image_args=()
+for img in ${images[@]+"${images[@]}"}; do
+  [[ -f $img ]] || { echo "codex-imagegen: no such image: $img" >&2; exit 2; }
+  image_args+=(-i "$img")
+done
+
+instructions="Use your built-in image_gen tool to create exactly one image for the request below.
+Do not run shell commands, do not create or modify files, and do not ask questions.
+If you cannot make the image, reply with FAILED: followed by the reason. Otherwise reply with just DONE."
+if ((${#image_args[@]})); then
+  instructions+="
+The attached image(s) are inputs: edit them or use them as references, as the request says."
+fi
+
+codex_home=${CODEX_HOME:-$HOME/.codex}
+work=$(mktemp -d)
+trap 'rm -rf "$work"' EXIT
+
+# The prompt is passed on stdin so it cannot be mistaken for another -i value.
+if ! printf '%s\n\nRequest:\n%s\n' "$instructions" "$prompt" |
+  codex exec --skip-git-repo-check -s read-only -C "$work" --color never --json \
+    ${image_args[@]+"${image_args[@]}"} -- - >"$work/events.jsonl" 2>"$work/stderr.txt"; then
+  echo "codex-imagegen: codex exec failed:" >&2
+  tail -20 "$work/stderr.txt" >&2
+  exit 1
+fi
+
+thread_id=$(jq -r 'select(.type == "thread.started") | .thread_id' "$work/events.jsonl" | head -1)
+reply=$(jq -r 'select(.type == "item.completed" and .item.type == "agent_message") | .item.text' "$work/events.jsonl" | tail -1)
+src=""
+if [[ -n $thread_id && -d $codex_home/generated_images/$thread_id ]]; then
+  src=$(ls -t "$codex_home/generated_images/$thread_id"/*.png 2>/dev/null | head -1 || true)
+fi
+if [[ -z $src ]]; then
+  echo "codex-imagegen: no image was generated. Codex said: ${reply:-<nothing>}" >&2
+  exit 1
+fi
+
+if [[ $ext == png ]]; then
+  cp "$src" "$out"
+else
+  sips -s format jpeg "$src" --out "$out" >/dev/null
+fi
+echo "$(cd "$(dirname "$out")" && pwd)/$(basename "$out")"

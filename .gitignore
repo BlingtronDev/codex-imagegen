@@ -1,0 +1,3 @@
+.DS_Store
+# Default output of scripts/codex-imagegen when -o is not given
+codex-image-*.png
