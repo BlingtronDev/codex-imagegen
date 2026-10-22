@@ -33,7 +33,13 @@ Works with Claude Code, Cursor, GitHub Copilot, Gemini CLI, OpenCode, Windsurf, 
 
 </details>
 
-Codex is left out on purpose: it can call `image_gen` directly, so it does not need this skill.
+Codex is left out on purpose: it can call `image_gen` directly, so it does not need this skill. Codex still loads skills from `~/.agents/skills/`, though, so if you use Codex too, turn the skill off for it in `~/.codex/config.toml` (use your own home directory in `path`) and restart Codex:
+
+```toml
+[[skills.config]]
+path = "/Users/you/.agents/skills/codex-imagegen/SKILL.md"
+enabled = false
+```
 
 ## Requirements
 

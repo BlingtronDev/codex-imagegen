@@ -33,7 +33,13 @@
 
 </details>
 
-Codex 不在名单里，是因为它自己就能直接调用 `image_gen`，用不着这个技能。
+Codex 不在名单里，是因为它自己就能直接调用 `image_gen`，用不着这个技能。不过 Codex 也会加载 `~/.agents/skills/` 里的技能，所以如果你也用 Codex，最好在 `~/.codex/config.toml` 里把它关掉（`path` 换成你自己的用户目录），然后重启 Codex：
+
+```toml
+[[skills.config]]
+path = "/Users/you/.agents/skills/codex-imagegen/SKILL.md"
+enabled = false
+```
 
 ## 准备工作
 
