@@ -1,5 +1,7 @@
 # codex-imagegen
 
+English | [简体中文](README.zh-CN.md)
+
 An agent skill that lets coding agents such as Claude Code generate and edit raster images through [Codex CLI](https://github.com/openai/codex)'s built-in `image_gen` tool. It uses your ChatGPT login, so no `OPENAI_API_KEY` is needed.
 
 The skill is a single shell script plus a `SKILL.md` that tells the agent when and how to call it.
