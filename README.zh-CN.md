@@ -8,13 +8,11 @@
 
 ## 支持的智能体
 
-只要智能体会从 `.agents/skills/`（项目里的，或全局的 `~/.agents/skills/`）加载技能，又能执行 shell 命令，就能用。包括 Amp、Antigravity、Cline、Cursor、Deep Agents、Dexto、Droid、Firebender、fx、Gemini CLI、GitHub Copilot、Kilo Code、Kimi Code CLI、Loaf、OpenCode、pi、PromptScript、Replit、Sarvam Code、Warp、Zed。
+只要 [`skills` 命令](https://github.com/vercel-labs/skills/blob/main/docs/agents.md)能装进去、又能执行 shell 命令的智能体，都能用。目前一共 75 个，包括 Claude Code、Cursor、GitHub Copilot、Gemini CLI、OpenCode、Windsurf、pi 等：
 
-[Claude Code](https://claude.com/claude-code) 读的是 `.claude/skills/`，也能用，只是要多链接一下（见“安装”）。
+AdaL、AiderDesk、Amp、Antigravity、Antigravity CLI、AstrBot、Augment、Autohand Code CLI、Claude Code、Cline、Code Studio、CodeArts Agent、CodeBuddy、Codemaker、Command Code、Continue、Cortex Code、Crush、Cursor、Deep Agents、Devin for Terminal、Dexto、Droid、Eve、Firebender、ForgeCode、fx、Gemini CLI、GitHub Copilot、Goose、Grok Build、Hermes Agent、IBM Bob、iFlow CLI、inference.sh、Jazz、Junie、Kilo Code、Kimchi、Kimi Code CLI、Kiro CLI、Kode、Lingma、Loaf、MCPJam、MiniMax Code、Mistral Vibe、Moxby、Mux、Neovate、Ona、OpenClaw、OpenCode、OpenHands、pi、Pochi、Posit Assistant、PromptScript、Qoder、Qwen Code、Reasonix、Replit、Roo Code、Rovo Dev、Sarvam Code、Tabnine CLI、Terramind、Tinycloud、Trae、Warp、Windsurf、ZCode、Zed、Zencoder、Zenflow。
 
-Codex 也会读 `.agents/skills/`，但它自己就能直接调用 `image_gen`，用不着这个技能。
-
-这份名单来自 [`skills` 命令的智能体列表](https://github.com/vercel-labs/skills/blob/main/docs/agents.md)。
+Codex 不在名单里，是因为它自己就能直接调用 `image_gen`，用不着这个技能。
 
 ## 准备工作
 
@@ -24,26 +22,11 @@ Codex 也会读 `.agents/skills/`，但它自己就能直接调用 `image_gen`�
 
 ## 安装
 
-用 [`skills`](https://github.com/vercel-labs/skills) 一行命令装好：
-
 ```bash
 npx skills@latest add BlingtronDev/codex-imagegen -g
 ```
 
-加 `-g` 是装到全局，所有项目都能用；不加就只装到当前项目。
-
-也可以手动装：把仓库克隆到 `~/.agents/skills/` 就行，pi、Cline、Warp、Zed 这些智能体会直接读这个文件夹。
-
-```bash
-git clone https://github.com/BlingtronDev/codex-imagegen.git ~/.agents/skills/codex-imagegen
-```
-
-用 Claude Code 的话，还要再链接到 `~/.claude/skills/`：
-
-```bash
-mkdir -p ~/.claude/skills
-ln -s ../../.agents/skills/codex-imagegen ~/.claude/skills/codex-imagegen
-```
+它会自动找到你电脑上装了哪些智能体，把技能分别装进去。加 `-g` 是装到全局，所有项目都能用；不加就只装到当前项目。想自己指定装给哪些智能体，可以加 `-a`，比如 `-a claude-code cursor`。
 
 ## 怎么用
 

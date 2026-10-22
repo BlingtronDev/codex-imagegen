@@ -8,13 +8,11 @@ The skill is a single shell script plus a `SKILL.md` that tells the agent when a
 
 ## Supported agents
 
-Any agent that loads skills from `.agents/skills/` (in the project, or `~/.agents/skills/` globally) and can run shell commands. That includes Amp, Antigravity, Cline, Cursor, Deep Agents, Dexto, Droid, Firebender, fx, Gemini CLI, GitHub Copilot, Kilo Code, Kimi Code CLI, Loaf, OpenCode, pi, PromptScript, Replit, Sarvam Code, Warp, Zed.
+Any agent that the [`skills` CLI](https://github.com/vercel-labs/skills/blob/main/docs/agents.md) can install to and that can run shell commands. That is 75 agents so far, including Claude Code, Cursor, GitHub Copilot, Gemini CLI, OpenCode, Windsurf and pi:
 
-[Claude Code](https://claude.com/claude-code) loads skills from `.claude/skills/` instead. It works too; it just needs a link (see Install).
+AdaL, AiderDesk, Amp, Antigravity, Antigravity CLI, AstrBot, Augment, Autohand Code CLI, Claude Code, Cline, Code Studio, CodeArts Agent, CodeBuddy, Codemaker, Command Code, Continue, Cortex Code, Crush, Cursor, Deep Agents, Devin for Terminal, Dexto, Droid, Eve, Firebender, ForgeCode, fx, Gemini CLI, GitHub Copilot, Goose, Grok Build, Hermes Agent, IBM Bob, iFlow CLI, inference.sh, Jazz, Junie, Kilo Code, Kimchi, Kimi Code CLI, Kiro CLI, Kode, Lingma, Loaf, MCPJam, MiniMax Code, Mistral Vibe, Moxby, Mux, Neovate, Ona, OpenClaw, OpenCode, OpenHands, pi, Pochi, Posit Assistant, PromptScript, Qoder, Qwen Code, Reasonix, Replit, Roo Code, Rovo Dev, Sarvam Code, Tabnine CLI, Terramind, Tinycloud, Trae, Warp, Windsurf, ZCode, Zed, Zencoder, Zenflow.
 
-Codex also reads `.agents/skills/`, but it can call `image_gen` directly, so it does not need this skill.
-
-The list comes from the [`skills` CLI's agent table](https://github.com/vercel-labs/skills/blob/main/docs/agents.md).
+Codex is left out on purpose: it can call `image_gen` directly, so it does not need this skill.
 
 ## Requirements
 
@@ -24,26 +22,11 @@ The list comes from the [`skills` CLI's agent table](https://github.com/vercel-l
 
 ## Install
 
-With the [`skills`](https://github.com/vercel-labs/skills) CLI:
-
 ```bash
 npx skills@latest add BlingtronDev/codex-imagegen -g
 ```
 
-`-g` installs it for your user so every project can use it. Leave it off to install into the current project only.
-
-Or install by hand. Clone the repo into `~/.agents/skills/`, which agents such as pi, Cline, Warp and Zed read directly:
-
-```bash
-git clone https://github.com/BlingtronDev/codex-imagegen.git ~/.agents/skills/codex-imagegen
-```
-
-For Claude Code, also link it into `~/.claude/skills/`:
-
-```bash
-mkdir -p ~/.claude/skills
-ln -s ../../.agents/skills/codex-imagegen ~/.claude/skills/codex-imagegen
-```
+The CLI detects the agents you have installed and links the skill into each one. `-g` installs it for your user so every project can use it; leave it off to install into the current project only. To pick agents yourself, add `-a`, for example `-a claude-code cursor`.
 
 ## Usage
 
